@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .home {
+      position: relative;
+      padding: 2px;
+      background: #fff;
+      height: 100vh;
+      /* width: 100%;*/
+    }
+
+
+    /* .left,
+    .center,
+    .right {
+      display: block;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      border: 1px solid rgba(121, 121, 121, 1);
+      background-color: rgba(215, 215, 215, 1);
+    } */
+
+    .left {
+
+      width: 200px;
+
+      height: 500px;
+
+      background-color: yellow;
+
+      position: absolute;
+      /* 绝对定位，使位置固定 */
+
+      left: 0;
+
+      top: 0;
+
+    }
+
+    .center {
+
+      height: 600px;
+
+      background-color: purple;
+
+      margin: 0 300px 0 200px;
+      /* 通过外边距确定宽度 */
+
+    }
+
+    .right {
+
+      width: 300px;
+
+      height: 500px;
+
+      background-color: red;
+
+      position: absolute;
+      /* 绝对定位，使位置固定 */
+
+      right: 0;
+
+      top: 0;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="home">
+    <section class="left">left</section>
+    <section class="center">center</section>
+    <section class="right">right</section>
+  </div>
+
+  <script>
+
+    export default {
+      name: 'Home',
+    }
+  </script>
+
+
+</body>
+
+</html>

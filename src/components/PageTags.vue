@@ -1,12 +1,12 @@
 <template>
-  <div class="PageTags">
-    <button @click="addPage">add page</button>
-    <ul v-if="pageNum!=0">
-      <li v-for="item in pageTagList"
+  <div class="PageTags"
+       v-on:addPage="handleAddPage">
+    <button @click="addPage1">add page</button>
+    <ul v-if="pageList.lenght!=0">
+      <li v-for="item in pageList"
           :key="item.index">
         <pageTag v-bind:index="item.index"
-                 v-bind:name="item.name"
-                 v-bind:class="{pageIsActive:item.index==currPageIndex}" />
+                 v-bind:name="item.name" />
       </li>
     </ul>
   </div>
@@ -15,6 +15,7 @@
 <script>
 import PageTag from '@/components/PageTag'
 import { mapState } from 'vuex'
+import Page from '@/components/Page'
 export default {
   components: {
     PageTag
@@ -24,22 +25,24 @@ export default {
       index: 0
     }
   },
-  computed:
-    mapState(["pageTagList", "pageNum", "currPageIndex"])
-  ,
+  computed: {
+    ...mapState(["pageList", "currPageIndex"])
+  },
   methods: {
-    addPage () {
-      var index = ++this.index;
-      var pagetag = { index: index, content: "pageTag" + index, name: "pageTag" + index };
-      var page = { index: index, content: "page" + index, name: "page" + index };
-      this.$store.commit("addPage", { pagetag, page });
-      console.log(this.pageNum);
+    addPage1 () {
+      var index = this.pageList.length + 1;
+      var page = new Page("页面" + index, index - 1, []);
+      this.$store.commit("addPage", page);
+    }
+    ,
+    handleAddPage () {
+      console.log("handleAddPage")
+      var index = this.pageList.length + 1;
+      var page = new Page("页面" + index, index - 1, []);
+      this.$store.commit("addPage", page);
     }
   }
 }
 </script>
 <style  scoped>
-.pageIsActive {
-  border: 1px solid red;
-}
 </style>

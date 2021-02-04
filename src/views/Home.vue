@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-
+    <!-- 左侧页面管理与组件管理 -->
     <section class="left">
       <el-tabs v-model="activeManagePageName"
                @tab-click="handleClick"
@@ -10,14 +10,19 @@
           <pageTags />
         </el-tab-pane>
         <el-tab-pane label="组件列表"
-                     name="componentsListPlane">组件列表</el-tab-pane>
+                     name="componentsListPlane">
+          <ComponentList />
+        </el-tab-pane>
       </el-tabs>
     </section>
-
+    <!--中间编辑区、预览、文本  -->
     <section class="center">
-      <div class="editor-header"> <span>编辑区</span><span isshow="curPage"
-              style="margin-left:5px;color:rgb(22, 155, 213);">页面{{curPageIndex}}</span></div>
-      <div class="editor-plane">
+      <div class="editor-header"> <span>编辑区</span><span v-show="editMode"
+              style="margin-left:5px;color:rgb(22, 155, 213);">页面{{currPageIndex+1}}</span></div>
+      <div class="editor-plane"
+           @drop="handleDrop"
+           @dragover="handleDragOver"
+           @click="deselectCurComponent">
         <Editor />
       </div>
 
@@ -26,11 +31,13 @@
       <div class="previewPlane">预览区</div>
       <textarea />
     </section>
-
+    <!-- 右侧属性面板 -->
     <section class="right">
       <el-tabs v-model="activeToolboxName">
         <el-tab-pane label="属性"
-                     name="propertiesPlane">属性</el-tab-pane>
+                     name="propertiesPlane">
+          <AttributeList />
+        </el-tab-pane>
       </el-tabs>
     </section>
   </div>
@@ -39,17 +46,24 @@
 <script>
 import Editor from '@/components/Editor/index'
 import PageTags from '@/components/PageTags'
+import ComponentList from '@/components/ComponentList'
+import AttributeList from "@/components/AttributeList"
+import { mapState } from 'vuex'
+import componentslist from '@/components/UseableComponents/components-list'
+import generateID from '@/utils/generateID'
+import { deepCopy } from '@/utils/utils'
 
 export default {
   name: 'Home',
   components: {
     Editor,
-    PageTags
+    PageTags,
+    ComponentList,
+    AttributeList
   },
   data () {
     return {
       activeManagePageName: 'pagesListPlane',
-      curPageIndex: 1,
       activeToolboxName: 'propertiesPlane',
     }
   },
@@ -59,7 +73,31 @@ export default {
     },
     showPreview () {
       console.log('prevew')
-    }
+    },
+    handleDrop (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      const component = deepCopy(componentslist[e.dataTransfer.getData('index')])
+      //e.target为editor
+      component.style.top = e.offsetY
+      component.style.left = e.offsetX
+      component.id = generateID()
+      this.$store.commit('addComponentToCurrPage',
+        component
+      )
+      // this.$store.commit('recordSnapshot')
+    },
+    handleDragOver (e) {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'copy'
+    },
+    deselectCurComponent () {
+      this.$store.commit('changeCurrComponentIndex', -1)
+      // this.$store.commit('hideContexeMenu')
+    },
+  },
+  computed: {
+    ...mapState(["currPageIndex", "editMode"])
   }
 }
 </script>
@@ -110,19 +148,34 @@ export default {
   border: none;
   padding: 0 5px;
 }
+/*editor-plane  */
+.editor-plane {
+  width: 100%;
+  height: 200px;
+  /* overflow: auto; */
+  background-color: #000;
+}
 </style>
+
 <style>
 /* el-tabs样式修改 */
+.el-tabs {
+  height: 100%;
+}
 .left .el-tabs--top .el-tabs__item.is-top:nth-child(2) {
   padding: 0 12px;
 }
-.left .el-tabs__item {
+.left .el-tabs__item,
+.right .el-tabs__item {
   height: 24px;
   line-height: 24px;
   font-weight: 400;
 }
 .left .el-tabs__header {
   margin: 0 0 5px;
+}
+.el-tabs__content {
+  height: 100%;
 }
 /* button样式 */
 </style>

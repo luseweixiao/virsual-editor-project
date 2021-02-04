@@ -3,6 +3,7 @@ import ElementUI from 'element-ui';
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import '@/components/UseableComponents' //全局注册自定义组件，要在根vue实例化之前
 
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/styles/reset.css'

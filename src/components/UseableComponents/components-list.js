@@ -5,6 +5,7 @@ const list = [
     label: '文字',
     propValue: '文字',
     icon: 'el-icon-edit',
+    locked: false,
     style: {
       width: 200,
       height: 33,
@@ -17,7 +18,8 @@ const list = [
       textAlign: '',
       color: '',
       borderWdith: 1,
-      rotate: 0
+      rotate: 0,
+      // zIndex: 1,
     },
     attrComponent: {
       hasPositionSize: true,
@@ -31,6 +33,7 @@ const list = [
     component: "u-picture",
     label: "图片",
     icon: 'el-icon-picture',
+    locked: false,
     style: {
       width: 200,
       height: 33,
@@ -40,6 +43,7 @@ const list = [
       textAlign: '',
       borderWdith: 1,
       rotate: 0,
+      // zIndex: 1,
     },
     attrComponent: {
       hasPositionSize: true,
@@ -53,6 +57,7 @@ const list = [
     component: "u-button",
     label: "按钮",
     icon: 'el-icon-thumb',
+    locked: false,//是否锁定编辑
     style: {
       width: 200,
       height: 33,
@@ -62,6 +67,7 @@ const list = [
       textAlign: '',
       borderWdith: 1,
       rotate: 0,
+      // zIndex: 1,
     }
   }
 ];

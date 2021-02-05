@@ -1,11 +1,5 @@
 <template>
   <div class="attribuite-list">
-    <!-- <ul>
-      <li v-for="(value,name) in styleKeys"
-          :key="name">
-        <span>{{name}}</span>-<span>{{value}}</span>
-      </li>
-    </ul> -->
     <el-form>
       <el-form-item v-for="(value,name) in styleKeys"
                     :key="name"
@@ -28,7 +22,7 @@
                   v-model="styleKeys[name]" />
       </el-form-item>
       <el-form-item label="内容"
-                    v-if="currComponent && !excludes.includes(currComponent.component)">
+                    v-if="currComponent && !excludes.includes(currComponent.component)&&currComponentIndex>=0">
         <el-input type="textarea"
                   v-model="currComponent.propValue" />
       </el-form-item>
@@ -82,16 +76,15 @@ export default {
   }
   ,
   computed: {
-    ...mapState(["pageList", "currPageIndex", "currComponentIndex"]),
+    ...mapState(["pageList", "currPageIndex", "currComponentIndex", "currComponent"]),
     styleKeys () {
-      console.log("this.currCompone", this.currComponent)
-      var style = this.currComponent ? this.currComponent.style : {};
-      return style;
-    },
-    currComponent () {
-      var currCom = (this.pageList.length > 0 && this.pageList[this.currPageIndex] != null) ? this.pageList[this.currPageIndex].componentsData[this.currComponentIndex] : null;
-      console.log("currCom", currCom)
-      return currCom;
+      if (this.currComponentIndex >= 0) {
+        var style = this.currComponent ? this.currComponent.style : {};
+        return style;
+      } else {
+        return null;
+      }
+
     },
   }
 }

@@ -81,7 +81,7 @@ export default {
     selectCurrComponent (e) {
       e.stopPropagation();
       e.preventDefault();
-      this.$store.commit("changeCurrComponentIndex", this.index);
+      this.$store.commit("setCurrComponent", { component: this.element, index: this.index });
     },
     getCursor () {
       const { angleToCursor, initialAngle, pointList } = this;
@@ -113,7 +113,7 @@ export default {
         e.preventDefault();
       }
       e.stopPropagation();
-      this.$store.commit("changeCurrComponentIndex", this.index);
+      this.$store.commit("setCurrComponent", { component: this.element, index: this.index });
       this.cursors = this.getCursor();
 
       let pos = { ...this.defaultStyle };
@@ -134,7 +134,6 @@ export default {
         pos.top = curY - startY + startTop;
         pos.left = curX - startX + startLeft;
 
-        // console.log("this.currcomponent", this.currComponent)
         pos = this.setPos(pos);//将组件限制在编辑器区
 
         // 修改当前组件样式
@@ -162,7 +161,6 @@ export default {
       document.addEventListener('mouseup', up)
     },
     handleMouseDownOnPoint (point, e) {
-      // console.log("e.target", e.clientX, e.clientY, e.offsetX, e.offsetY)
       const downEvent = window.event
       downEvent.stopPropagation()
       downEvent.preventDefault()
@@ -175,7 +173,6 @@ export default {
       }
       // 获取画布位移信息
       const editorRectInfo = document.querySelector('#editor').getBoundingClientRect();
-      console.log("editorRectInfo", editorRectInfo, e.clientX, e.clientY)
       // 当前点击坐标
       const curPoint = {
         x: e.clientX - editorRectInfo.left,
@@ -202,7 +199,6 @@ export default {
           x: moveEvent.clientX - editorRectInfo.left,
           y: moveEvent.clientY - editorRectInfo.top,
         }
-        console.log("handleMouseDownOnPoint", curPositon, center, curPoint)
         //center 点击是的组件中心点在editor中的坐标
         //curPoint 点击时在eidtor中的坐标
         //curPosition 实时点击点在eidtor中的坐标
@@ -212,7 +208,6 @@ export default {
           curPoint,
           symmetricPoint,
         })
-        console.log("style", style)
         this.$store.commit('setShapeStyle', style)
       }
       const up = () => {
@@ -279,11 +274,11 @@ export default {
   },
   computed: {
 
-    ...mapState(["currPageIndex", "currComponentIndex", "pageList", "editorStyleData"]),
-    currComponent () {
-      var currCom = (this.pageList.length > 0 && this.pageList[this.currPageIndex] != null) ? this.pageList[this.currPageIndex].componentsData[this.currComponentIndex] : null;
-      return currCom;
-    },
+    ...mapState(["currComponentIndex", "editorStyleData", "currComponent"]),
+    // currComponent () {
+    //   var currCom = (this.pageList.length > 0 && this.pageList[this.currPageIndex] != null) ? this.pageList[this.currPageIndex].componentsData[this.currComponentIndex] : null;
+    //   return currCom;
+    // },
   }
 }
 </script>

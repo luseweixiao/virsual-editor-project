@@ -92,7 +92,7 @@ export default {
       e.dataTransfer.dropEffect = 'copy'
     },
     deselectCurComponent () {
-      this.$store.commit('changeCurrComponentIndex', -1)
+      // this.$store.commit('changeCurrComponentIndex', -1)
       // this.$store.commit('hideContexeMenu')
     },
   },
@@ -151,7 +151,7 @@ export default {
 /*editor-plane  */
 .editor-plane {
   width: 100%;
-  height: 200px;
+  height: 500px;
   /* overflow: auto; */
   background-color: #000;
 }
